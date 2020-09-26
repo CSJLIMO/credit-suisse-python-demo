@@ -9,6 +9,7 @@ import codeitsuisse.routes.fruitbasket
 import codeitsuisse.routes.cluster
 import codeitsuisse.routes.social_distancing
 import codeitsuisse.routes.optimizeportfolio
+import codeitsuisse.routes.contact_trace
 
 
 
