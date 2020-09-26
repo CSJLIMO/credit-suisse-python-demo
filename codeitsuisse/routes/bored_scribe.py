@@ -81,13 +81,64 @@ def get_key(s):
         for c in longest:
             key += ord(c)
     return key
+
+f = open("words_10000.txt",'r')
+lines = f.readlines()
+words = []
+for i in range(len(lines)-1):
+    if len(lines[i][:-1]) >= 3:
+        words.append(lines[i][:-1])
+words.append(lines[len(lines)-1])
+small_list = ["a", "ad", "am", "an", "as", "at", "ax", "be", "by", "do", "go", "if", "in", 
+"is", "it", "me", "my", "no", "of", "on", "or", "ox", "so", "to", "us", "we"]
+for word in small_list:
+    words.append(word)
+    
+def is_valid(s):
+    if s in words:
+        return True
+    n = len(s)
+    if n>=6:
+        return True
+    return False    
+
+def split_text(s):
+    
+    n = len(s)
+    subwords = []
+    for word in words:
+        if s.find(word) != -1:
+            subwords.append(word)            
+    subwords.sort(key=len, reverse=True)
+    
+    ret = []
+
+    splitted = False
+    for word in subwords:
+        st = s.find(word)
+        en = st + len(word) - 1
+        if (st == 0 or is_valid(s[:st])) and (en == n-1 or is_valid(s[(en+1):])):
+            
+            if st > 0:
+                ret += split_text(s[:st])
+            # print(" ", end = "")
+            # print(word, end = "")
+            ret += [word]
+            # print(" ", end = "")
+            if en < n-1:
+                ret += split_text(s[(en+1):])
+            splitted = True
+            break
+    if not splitted:
+        ret += [s]
+    return ret
     
 
 @app.route('/bored-scribe', methods=['POST'])
 def evaluate_bored_scribe():
     data = request.get_json();
     logging.info("data sent for evaluation {}".format(data))
-    
+
     op = []
     for item in data:
         encoded = item["encryptedText"]
@@ -100,13 +151,22 @@ def evaluate_bored_scribe():
                 count = i
                 break
             temp = shift_k(temp, get_key(temp))
+            
+        splitted = split_text(decoded)
+        ds = splitted[0]
+        for i in range(1, len(splitted)):
+            ds = ds + ' ' + splitted[i]
         
         
-        op.append({"id": item["id"], "encryptionCount": count, "originalText": decoded})
+        op.append({"id": item["id"], "encryptionCount": count, "originalText": ds})
         
 
     logging.info("My result :{}".format(op))
     return jsonify(op);
+
+
+
+
 
 
 
