@@ -66,7 +66,7 @@ def get_ans(port_val, sigma_s, futures):
             best_ind = ind
             
     name = futures[best_ind]["Name"]    
-    return {"HedgePositionName": name, "OptimalHedgeRatio": be_str(hedge_ratios[best_ind]), "NumFuturesContract": int(best_contracts + 0.3)}
+    return {"HedgePositionName": name, "OptimalHedgeRatio": hedge_ratios[best_ind], "NumFuturesContract": int(best_contracts + 0.3)}
             
     
 
@@ -86,6 +86,9 @@ def evaluate_optimizeportfolio():
 
     logging.info("My result :{}".format(outputs))
     return jsonify({"outputs": outputs});
+
+
+
 
 
 
