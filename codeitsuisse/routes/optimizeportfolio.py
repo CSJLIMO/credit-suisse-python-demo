@@ -59,8 +59,11 @@ def evaluate_optimizeportfolio():
         outputs.append(get_ans(port_val, sigma_s, futures))
         
 
-    # logging.info("My result :{}".format(result))
+    logging.info("My result :{}".format(outputs))
     return jsonify({"outputs": outputs});
+
+
+
 
 
 
