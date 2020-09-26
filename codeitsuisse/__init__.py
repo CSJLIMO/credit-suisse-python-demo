@@ -11,7 +11,7 @@ import codeitsuisse.routes.social_distancing
 import codeitsuisse.routes.optimizeportfolio
 import codeitsuisse.routes.contact_trace
 import codeitsuisse.routes.swaphedge
-
+import codeitsuisse.routes.bored_scribe
 
 
 
