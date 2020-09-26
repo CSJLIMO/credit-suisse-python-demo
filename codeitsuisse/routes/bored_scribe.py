@@ -94,12 +94,12 @@ def evaluate_bored_scribe():
         decoded = decode(encoded)
         encode_key = get_key(decoded)
         
-        count = 0
+        count = -1
         temp = decoded
-        for i in range(25):
+        for i in range(26):
             if temp == encoded:
+                count = i
                 break
-            count += 1
             temp = shift_k(temp, encode_key)
         
         
@@ -108,6 +108,10 @@ def evaluate_bored_scribe():
 
     logging.info("My result :{}".format(op))
     return jsonify(op);
+
+
+
+
 
 
 
