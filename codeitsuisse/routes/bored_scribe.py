@@ -52,7 +52,7 @@ def get_key(s):
     key = 0
     longest = str(s[0])
     n = len(s)
-    for i in range(len(s)):
+    for i in range(n):
         can = 0
         while True:
             if 0<=i-(can+1) and i+(can+1)<n and s[i-(can+1)] == s[i+(can+1)]:
@@ -63,7 +63,7 @@ def get_key(s):
         if len(longest) < 2*can+1:
             longest = s[(i-can):(i+can+1)]
     
-    for i in range(len(s)-1):
+    for i in range(n-1):
         if s[i] == s[i+1]:
             can = 0
             while True:
@@ -75,8 +75,11 @@ def get_key(s):
             if len(longest) < 2*can+2:
                 longest = s[(i-can):(i+can+2)]        
     
-    for c in longest:
-        key += ord(c)
+    if len(longest) == 1:
+        key = ord(s[0])
+    else:
+        for c in longest:
+            key += ord(c)
     return key
     
 
@@ -105,6 +108,9 @@ def evaluate_bored_scribe():
 
     logging.info("My result :{}".format(op))
     return jsonify(op);
+
+
+
 
 
 
