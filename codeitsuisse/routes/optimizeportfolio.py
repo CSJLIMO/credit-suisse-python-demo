@@ -51,8 +51,8 @@ def get_ans(port_val, sigma_s, futures):
         if not dominated:
             convex_ind.append(i)
     
-    if len(convex_ind) > 1:
-        convex_ind = [i for i in range(len(futures))]
+    # if len(convex_ind) > 1:
+    #     convex_ind = [i for i in range(len(futures))]
     
     best_contracts = 1000000000
     best_ind = -1
@@ -83,6 +83,10 @@ def evaluate_optimizeportfolio():
 
     logging.info("My result :{}".format(outputs))
     return jsonify({"outputs": outputs});
+
+
+
+
 
 
 
