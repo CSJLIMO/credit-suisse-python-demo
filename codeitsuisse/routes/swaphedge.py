@@ -15,7 +15,7 @@ def evaluate_swaphedge():
     logging.info("data sent for evaluation {}".format(data))
     
     order = int(data["accu_order"] - data["our_position"])
-    if abs(order) <= 10:
+    if abs(order) <= 20:
         order = 0
     
 
