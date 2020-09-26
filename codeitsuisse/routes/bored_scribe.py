@@ -92,7 +92,6 @@ def evaluate_bored_scribe():
     for item in data:
         encoded = item["encryptedText"]
         decoded = decode(encoded)
-        encode_key = get_key(decoded)
         
         count = -1
         temp = decoded
@@ -100,7 +99,7 @@ def evaluate_bored_scribe():
             if temp == encoded:
                 count = i
                 break
-            temp = shift_k(temp, encode_key)
+            temp = shift_k(temp, get_key(temp))
         
         
         op.append({"id": item["id"], "encryptionCount": count, "originalText": decoded})
@@ -108,6 +107,10 @@ def evaluate_bored_scribe():
 
     logging.info("My result :{}".format(op))
     return jsonify(op);
+
+
+
+
 
 
 
