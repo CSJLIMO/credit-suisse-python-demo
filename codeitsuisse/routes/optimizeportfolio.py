@@ -43,12 +43,14 @@ def get_ans(port_val, sigma_s, futures):
         
     convex_ind = []
     for i in range(len(futures)):
-        dominated = False
+        min_hedge_ratio = True
+        min_sigma_f = True
         for j in range(len(futures)):
-            if j != i and hedge_ratios[j] < hedge_ratios[i] and sigma_fs[j] < sigma_fs[i]:
-                dominated = True
-                break
-        if not dominated:
+            if j != i and hedge_ratios[j] < hedge_ratios[i]:
+                min_hedge_ratio = False
+            if j != i and sigma_fs[j] < sigma_fs[i]:
+                min_sigma_f = False
+        if min_hedge_ratio or min_sigma_f:
             convex_ind.append(i)
     
     # if len(convex_ind) > 1:
@@ -86,6 +88,9 @@ def evaluate_optimizeportfolio():
 
     logging.info("My result :{}".format(outputs))
     return jsonify({"outputs": outputs});
+
+
+
 
 
 
