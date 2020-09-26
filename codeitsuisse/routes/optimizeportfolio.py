@@ -13,7 +13,7 @@ def my_round(num, k):
     if k == 3:
         num *= 1000
         rem = num - int(num)
-        if rem >= 0.5:
+        if rem > 0:
             return (int(num) + 1) / 1000
         else:
             return int(num) / 1000
@@ -68,7 +68,7 @@ def get_ans(port_val, sigma_s, futures):
             best_ind = ind
             
     name = futures[best_ind]["Name"]    
-    return {"HedgePositionName": name, "OptimalHedgeRatio": hedge_ratios[best_ind], "NumFuturesContract": int(best_contracts + 0.3)}
+    return {"HedgePositionName": name, "OptimalHedgeRatio": be_str(hedge_ratios[best_ind]), "NumFuturesContract": int(best_contracts + 0.3)}
             
     
 
@@ -88,6 +88,9 @@ def evaluate_optimizeportfolio():
 
     logging.info("My result :{}".format(outputs))
     return jsonify({"outputs": outputs});
+
+
+
 
 
 
