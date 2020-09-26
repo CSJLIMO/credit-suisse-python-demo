@@ -49,6 +49,9 @@ def get_ans():
 
 @app.route('/cluster', methods=['POST'])
 def evaluate_cluster():
+    
+    global n, m, gr
+    
     data = request.get_json();
     logging.info("data sent for evaluation {}".format(data))
     
@@ -64,6 +67,9 @@ def evaluate_cluster():
     
     # logging.info("My result :{}".format(result))
     return jsonify({"answer": result});
+
+
+
 
 
 
