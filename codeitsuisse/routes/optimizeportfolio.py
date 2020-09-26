@@ -28,7 +28,7 @@ def get_ans(port_val, sigma_s, futures):
 
 
 
-@app.route('/optimizeportfolio', methods=['POST'])
+@app.route('/optimizedportfolio', methods=['POST'])
 def evaluate_optimizeportfolio():
     data = request.get_json();
     logging.info("data sent for evaluation {}".format(data))
