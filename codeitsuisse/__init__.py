@@ -6,6 +6,7 @@ import codeitsuisse.routes.sort
 import codeitsuisse.routes.salad_spree
 import codeitsuisse.routes.clean_floor
 import codeitsuisse.routes.fruitbasket
+import codeitsuisse.routes.cluster
 
 
 
