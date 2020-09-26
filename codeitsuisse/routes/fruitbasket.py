@@ -18,17 +18,17 @@ def evaluate_fruitbasket():
     print(data)
     logging.info("data sent for evaluation {}".format(data))
     
-    weights = [-33, 41, 115]
+    dic = {'maPomegranate': 59, 'maRamubutan': 43, 'maPineapple': 8, 
+           'maAvocado': 33, 'maApple': 31, 'maWatermelon': 84}
     ret = 0
-    keys = [key for key in data]
-    for i in range(3):
-        ret += weights[i] * data[keys[i]]
+    for key in data:
+        ret += dic[key] * data[key]
         
     result = "{}".format(ret)
         
     # logging.info("My result :{}".format(n))
     # return jsonify({"answers": answer_dic});
-    return "0"
+    return result
 
 
 
