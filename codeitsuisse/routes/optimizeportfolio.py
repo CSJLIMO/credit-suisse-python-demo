@@ -24,7 +24,7 @@ def get_ans(port_val, sigma_s, futures):
     sigma_fs = []
     for i in range(len(futures)):
         future = futures[i]
-        hedge_ratios.append(my_round(future["CoRelationCoefficient"] * sigma_s / future["FuturePrcVol"], 3))
+        hedge_ratios.append(round(future["CoRelationCoefficient"] * sigma_s / future["FuturePrcVol"], 3))
         sigma_fs.append(future["FuturePrcVol"])
         
     convex_ind = []
@@ -43,13 +43,13 @@ def get_ans(port_val, sigma_s, futures):
     best_contracts = 1000000000
     best_ind = -1
     for ind in convex_ind:
-        contracts = my_round(hedge_ratios[ind] * port_val / (futures[ind]["IndexFuturePrice"] * futures[ind]["Notional"]), 0)
+        contracts = round(hedge_ratios[ind] * port_val / (futures[ind]["IndexFuturePrice"] * futures[ind]["Notional"]), 0)
         if contracts < best_contracts:
             best_contracts = contracts
             best_ind = ind
             
-    name = futures[best_ind]["Name"]    
-    return {"HedgePositionName": name, "OptimalHedgeRatio": np.min(hedge_ratios), "NumFuturesContract": int(best_contracts + 0.3)}
+    name = futures[best_ind]["Name"]
+    return {"HedgePositionName": name, "OptimalHedgeRatio": hedge_ratios[best_ind], "NumFuturesContract": int(best_contracts + 0.3)}
             
     
 
@@ -69,6 +69,9 @@ def evaluate_optimizeportfolio():
 
     logging.info("My result :{}".format(outputs))
     return jsonify({"outputs": outputs});
+
+
+
 
 
 
