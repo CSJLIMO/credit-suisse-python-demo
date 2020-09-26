@@ -15,11 +15,16 @@ def evaluate_swaphedge():
     logging.info("data sent for evaluation {}".format(data))
     
     order = int(data["accu_order"] - data["our_position"])
+    if abs(order) <= 10:
+        order = 0
     
 
     
     logging.info("My result :{}".format(order))
     return jsonify({"order": order});
+
+
+
 
 
 
