@@ -22,6 +22,16 @@ def my_round(num, k):
         return (int(num) + 1)
     else:
         return int(num)
+    
+def be_str(num):
+    num = str(num)
+    if num.find('.') == -1:
+        num = num + ".000"
+        return num
+    add = len(num) - 1 - num.find('.')
+    for i in range(3 - add):
+        num += "0"
+    return num
 
 def get_ans(port_val, sigma_s, futures):
     hedge_ratios = []
@@ -53,7 +63,7 @@ def get_ans(port_val, sigma_s, futures):
             best_ind = ind
             
     name = futures[best_ind]["Name"]    
-    return {"HedgePositionName": name, "OptimalHedgeRatio": hedge_ratios[best_ind], "NumFuturesContract": int(best_contracts + 0.3)}
+    return {"HedgePositionName": name, "OptimalHedgeRatio": be_str(hedge_ratios[best_ind]), "NumFuturesContract": int(best_contracts + 0.3)}
             
     
 
@@ -73,6 +83,10 @@ def evaluate_optimizeportfolio():
 
     logging.info("My result :{}".format(outputs))
     return jsonify({"outputs": outputs});
+
+
+
+
 
 
 
