@@ -9,43 +9,39 @@ from codeitsuisse import app;
 
 logger = logging.getLogger(__name__)
 
+
 def get_ans(port_val, sigma_s, futures):
-    best_hedge_ratio = 2
-    best_hedge_ratio_index = -1
+    hedge_ratios = []
+    sigma_fs = []
     for i in range(len(futures)):
         future = futures[i]
-        hedge_ratio = future["CoRelationCoefficient"] * sigma_s / future["FuturePrcVol"]
-        hedge_ratio = round(hedge_ratio, 3)
-        if hedge_ratio < best_hedge_ratio:
-            best_hedge_ratio = hedge_ratio
-            best_hedge_ratio_index = i
-            
-    best_sigma_f = 2
-    best_sigma_f_index = -1
+        hedge_ratios.append(round(future["CoRelationCoefficient"] * sigma_s / future["FuturePrcVol"], 3))
+        sigma_fs.append(future["FuturePrcVol"])
+        
+    convex_ind = []
     for i in range(len(futures)):
-        future = futures[i]
-        if future["FuturePrcVol"] < best_sigma_f:
-            best_sigma_f = future["FuturePrcVol"]
-            best_sigma_f_index = i
-            
-    best_index = -1
-    if best_hedge_ratio_index == best_sigma_f_index:
-        best_index = best_hedge_ratio_index
-    else:
-        future1 = futures[best_hedge_ratio_index]
-        future2 = futures[best_sigma_f_index]
-        contracts1 = future1["CoRelationCoefficient"] * sigma_s / future1["CoRelationCoefficient"] * port_val / (future1["IndexFuturePrice"] * future1["Notional"])
-        contracts2 = future2["CoRelationCoefficient"] * sigma_s / future2["CoRelationCoefficient"] * port_val / (future2["IndexFuturePrice"] * future2["Notional"])
-        if contracts1 < contracts2:
-            best_index = best_hedge_ratio_index
-        else:
-            best_index = best_sigma_f_index
-            
-    name = futures[best_index]["Name"]
-    contracts = best_hedge_ratio * port_val / (futures[best_index]["IndexFuturePrice"] * futures[best_index]["Notional"])
-    contracts = int(round(contracts, 0))
+        dominated = False
+        for j in range(len(futures)):
+            if j != i and hedge_ratios[j] < hedge_ratios[i] and sigma_fs[j] < sigma_fs[i]:
+                dominated = True
+                break
+        if not dominated:
+            convex_ind.append(i)
     
-    return {"HedgePositionName": name, "OptimalHedgeRatio": best_hedge_ratio, "NumFuturesContract": contracts}
+    best_contracts = 1000000000
+    best_ind = -1
+    for ind in convex_ind:
+        contracts = round(hedge_ratios[ind] * port_val / (futures[ind]["IndexFuturePrice"] * futures[ind]["Notional"]), 0)
+        if contracts < best_contracts:
+            best_contracts = contracts
+            best_ind = ind
+            
+    name = futures[best_ind]["Name"]    
+    return {"HedgePositionName": name, "OptimalHedgeRatio": hedge_ratios[best_ind], "NumFuturesContract": int(best_contracts)}
+            
+    
+
+
 @app.route('/optimizedportfolio', methods=['POST'])
 def evaluate_optimizeportfolio():
     data = request.get_json();
@@ -61,6 +57,10 @@ def evaluate_optimizeportfolio():
 
     logging.info("My result :{}".format(outputs))
     return jsonify({"outputs": outputs});
+
+
+
+
 
 
 
